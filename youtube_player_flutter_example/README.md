@@ -1,16 +1,19 @@
 # youtube_player_flutter_example
 
-A new Flutter project.
+YouTubeプレーヤーを組み込んだだけの、シンプルなFlutterアプリの実装例。
 
-## Getting Started
+## 利用ライブラリ
+- 
+- youtube_player_flutter
+  - https://pub.dev/packages/youtube_player_flutter
+  - https://github.com/sarbagyastha/youtube_player_flutter
 
-This project is a starting point for a Flutter application.
+## 既知の問題点
 
-A few resources to get you started if this is your first Flutter project:
+FullScreen時に画面と動画のアスペクト比が異なる場合、動画の一部がカットされる。
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [BUG] Full Screen in Landscape mode cut the video
+    - https://github.com/sarbagyastha/youtube_player_flutter/issues/621
+- 対処方法例は示されている。そのうち取り込まれるか？
+    - https://github.com/sarbagyastha/youtube_player_flutter/issues/621#issuecomment-1434040824
+    - https://github.com/sarbagyastha/youtube_player_flutter/compare/master...peterweb2005:youtube_player_flutter:fullscreen-landscape
