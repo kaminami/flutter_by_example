@@ -10,7 +10,7 @@ YouTubeプレーヤーを組み込んだだけの、シンプルなFlutterアプ
 
 ## 既知の問題点
 
-FullScreen時に画面と動画のアスペクト比が異なる場合、動画の一部がカットされる。
+FullScreen時に画面の一部がカットされてしまう。
 
 - [BUG] Full Screen in Landscape mode cut the video
     - https://github.com/sarbagyastha/youtube_player_flutter/issues/621
