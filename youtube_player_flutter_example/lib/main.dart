@@ -44,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
       initialVideoId: 'joXAMsm9u7k', // https://www.youtube.com/watch?v=joXAMsm9u7k&t=5s
       flags: const YoutubePlayerFlags(
         autoPlay: false,
+        disableDragSeek: true,
       ),
     );
   }
