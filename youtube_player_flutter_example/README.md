@@ -3,7 +3,7 @@
 YouTubeプレーヤーを組み込んだだけの、シンプルなFlutterアプリの実装例。
 
 ## 利用ライブラリ
-- 
+
 - youtube_player_flutter
   - https://pub.dev/packages/youtube_player_flutter
   - https://github.com/sarbagyastha/youtube_player_flutter
