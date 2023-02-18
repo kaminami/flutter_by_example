@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: _Canvas()
+      body: _Canvas(),
     );
   }
 }
@@ -77,7 +77,6 @@ class _DraggableObjectState extends State<_DraggableObject> {
 
   @override
   Widget build(BuildContext context) {
-
     return Positioned(
       left: position.dx,
       top: position.dy,
@@ -87,6 +86,7 @@ class _DraggableObjectState extends State<_DraggableObject> {
           setState(() {
             final renderBox = context.findAncestorRenderObjectOfType() as RenderBox;
             final localOffset = renderBox.globalToLocal(details.offset);
+
             position = localOffset;
           });
         },
