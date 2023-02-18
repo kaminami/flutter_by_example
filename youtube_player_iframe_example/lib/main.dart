@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -39,17 +38,19 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    _controller =  YoutubePlayerController.fromVideoId(
+    _controller = YoutubePlayerController.fromVideoId(
       videoId: 'joXAMsm9u7k', // https://www.youtube.com/watch?v=joXAMsm9u7k&t=5s
       autoPlay: false,
-      params: const YoutubePlayerParams(showFullscreenButton: true),
+      params: const YoutubePlayerParams(
+        showFullscreenButton: true,
+      ),
     );
   }
 
   @override
   void dispose() {
     _controller.close();
-    
+
     super.dispose();
   }
 
@@ -60,14 +61,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
       return Scaffold(
         appBar: shouldShowAppBar ? AppBar(title: Text(widget.title)) : null,
-        // appBar: shouldShowAppBar ? AppBar(title: Text(widget.title)) : null,
         body: YoutubePlayerScaffold(
           controller: _controller,
-          // aspectRatio: 16 / 9,
           builder: (context, player) {
             return Column(
               children: [
-                player
+                player,
               ],
             );
           },
