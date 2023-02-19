@@ -11,11 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'StarMenu Test App',
+      title: 'StarMenu Example App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'StarMenu Test'),
+      home: const MyHomePage(title: 'StarMenu Example'),
     );
   }
 }
