@@ -10,11 +10,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Draggable Test App',
+      title: 'Previous State Image Test App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Draggable Test'),
+      home: const MyHomePage(title: 'Previous State Image Test'),
     );
   }
 }
