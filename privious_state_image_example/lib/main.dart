@@ -86,6 +86,10 @@ class _MyHomePageState extends State<MyHomePage> {
     RenderRepaintBoundary boundary = canvasBoundaryKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     final snapshot = boundary.toImageSync();
 
+    if (backgroundImage.runtimeType == RawImage) {
+      (backgroundImage as RawImage).image?.dispose();
+    }
+
     backgroundImage = RawImage(image: snapshot);
   }
 }
