@@ -12,4 +12,8 @@ class CounterState extends _$CounterState {
   void increment() {
     state += 1;
   }
+
+  void setCount(int count) {
+    state = count;
+  }
 }

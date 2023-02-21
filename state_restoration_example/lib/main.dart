@@ -21,18 +21,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends ConsumerWidget {
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => MyHomePageState();
+}
+
+class MyHomePageState extends ConsumerState<MyHomePage> with WidgetsBindingObserver {
+  @override
+  Widget build(BuildContext context) {
     final counter = ref.watch(counterStateProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
       body: Center(
         child: Column(
@@ -49,6 +54,8 @@ class MyHomePage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ref.read(counterStateProvider.notifier).increment();
+          // ref.read(counterStateProvider.notifier).setCount(100);
+          // ref.read(counterStateProvider.notifier).state = 19;
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
@@ -56,4 +63,20 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("### $state, ${ref.read(counterStateProvider.notifier).state}");
+  }
 }
