@@ -15,3 +15,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 
 - アプリ起動時に前回までのカウンター値を'0'としたかったが、アプリ起動時に1回だけ初期化処理を実行させる方法に行き当たらなかった
   - detached後の復帰で初期化処理を実行しない方法?
+
+
+https://user-images.githubusercontent.com/859822/220511649-02846a91-1e39-4439-ab31-6a16f5f08790.mp4
+
