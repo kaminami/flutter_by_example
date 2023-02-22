@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_restoration_example/counter_state.dart';
 
-void main() {
-  runApp(const ProviderScope(child: MyApp()));
+final sharedPreferencesProvider = Provider<SharedPreferences>(
+  (ref) => throw UnimplementedError(),
+);
+
+Future<void> main() async {
+  print("### main");
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  late final SharedPreferences sharedPreferences;
+  await Future.wait([
+    Future(() async {
+      sharedPreferences = await SharedPreferences.getInstance();
+    }),
+  ]);
+
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,6 +55,27 @@ class MyHomePage extends ConsumerStatefulWidget {
 
 class MyHomePageState extends ConsumerState<MyHomePage> with WidgetsBindingObserver {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final counterVal = ref.read(sharedPreferencesProvider).getInt('counter');
+      ref.read(counterStateProvider.notifier).state = counterVal ?? 0;
+    });
+
+    print("### initState");
+  }
+
+  @override
+  void dispose() {
+    print("### dispose");
+
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final counter = ref.watch(counterStateProvider);
 
@@ -54,8 +98,9 @@ class MyHomePageState extends ConsumerState<MyHomePage> with WidgetsBindingObser
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ref.read(counterStateProvider.notifier).increment();
-          // ref.read(counterStateProvider.notifier).setCount(100);
-          // ref.read(counterStateProvider.notifier).state = 19;
+
+          final int countVal = ref.read(counterStateProvider.notifier).state;
+          ref.read(sharedPreferencesProvider).setInt('counter', countVal);
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
@@ -64,19 +109,7 @@ class MyHomePageState extends ConsumerState<MyHomePage> with WidgetsBindingObser
   }
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    WidgetsBinding.instance.removeObserver(this);
-  }
-
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("### $state, ${ref.read(counterStateProvider.notifier).state}");
+    print("### $state");
   }
 }
