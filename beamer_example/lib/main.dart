@@ -50,6 +50,7 @@ class ALocation extends BeamLocation<BeamState> {
           const BeamPage(
             key: ValueKey('a/details'),
             title: 'Details A',
+            type: BeamPageType.fadeTransition,
             child: DetailsScreen(label: 'A'),
           ),
       ];
@@ -74,6 +75,7 @@ class BLocation extends BeamLocation<BeamState> {
           const BeamPage(
             key: ValueKey('b/details'),
             title: 'Details B',
+            type: BeamPageType.slideTopTransition,
             child: DetailsScreen(label: 'B'),
           ),
       ];
