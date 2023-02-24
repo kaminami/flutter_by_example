@@ -12,3 +12,8 @@ Beamerを用いたBottomNavigationBarとタブ状態を保持するサンプル�
 - Beamer
   - https://pub.dev/packages/beamer
   - https://github.com/slovnicki/beamer
+
+
+
+https://user-images.githubusercontent.com/859822/221276111-bc480afd-7b62-4810-8e79-95c1ed6560c2.mp4
+
