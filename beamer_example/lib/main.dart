@@ -1,153 +1,234 @@
-import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:beamer/beamer.dart';
+import 'package:flutter/material.dart';
 
-// DATA
-class Book {
-  const Book(this.id, this.title, this.author);
-
-  final int id;
-  final String title;
-  final String author;
+void main() {
+  runApp(MyApp());
 }
 
-const List<Book> books = [
-  Book(1, '1 Stranger in a Strange Land', 'Robert A. Heinlein'),
-  Book(2, '2 Foundation', 'Isaac Asimov'),
-  Book(3, '3 Fahrenheit 451', 'Ray Bradbury'),
-  Book(4, '4 Stranger in a Strange Land', 'Robert A. Heinlein'),
-  Book(5, '5 Foundation', 'Isaac Asimov'),
-  Book(6, '6 Fahrenheit 451', 'Ray Bradbury'),
-  Book(7, '7 Stranger in a Strange Land', 'Robert A. Heinlein'),
-  Book(8, '8 Foundation', 'Isaac Asimov'),
-  Book(9, '9 Fahrenheit 451', 'Ray Bradbury'),
-  Book(10, '10 Stranger in a Strange Land', 'Robert A. Heinlein'),
-  Book(11, '11 Foundation', 'Isaac Asimov'),
-  Book(12, '12 Fahrenheit 451', 'Ray Bradbury'),
-];
-
-// SCREENS
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => context.beamToNamed('/books'),
-          child: const Text('See books'),
-        ),
-      ),
-    );
-  }
-}
-
-class BooksScreen extends StatelessWidget {
-  const BooksScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Books'),
-      ),
-      body: ListView(
-        children: books
-            .map(
-              (book) => ListTile(
-                title: Text(book.title),
-                subtitle: Text(book.author),
-                onTap: () => context.beamToNamed('/books/${book.id}'),
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-}
-
-class BookDetailsScreen extends StatelessWidget {
-  const BookDetailsScreen({Key? key, required this.book}) : super(key: key);
-
-  final Book? book;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(book?.title ?? 'Not Found'),
-      ),
-      body: book != null
-          ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Author: ${book!.author}'),
-            )
-          : const SizedBox.shrink(),
-    );
-  }
-}
-
-// LOCATIONS
-class BooksLocation extends BeamLocation<BeamState> {
-  @override
-  List<Pattern> get pathPatterns => ['/books/:bookId'];
-
-  @override
-  List<BeamPage> buildPages(BuildContext context, BeamState state) {
-    final pages = [
-      const BeamPage(
-        key: ValueKey('home'),
-        title: 'Home',
-        child: HomeScreen(),
-      ),
-      if (state.uri.pathSegments.contains('books'))
-        const BeamPage(
-          key: ValueKey('books'),
-          title: 'Books',
-          child: BooksScreen(),
-        ),
-    ];
-    final String? bookIdParameter = state.pathParameters['bookId'];
-    if (bookIdParameter != null) {
-      final bookId = int.tryParse(bookIdParameter);
-      final book = books.firstWhereOrNull((book) => book.id == bookId);
-      pages.add(
-        BeamPage(
-          key: ValueKey('book-$bookIdParameter'),
-          title: 'Book #$bookIdParameter',
-          child: BookDetailsScreen(book: book),
-        ),
-      );
-    }
-    return pages;
-  }
-}
-
-// APP
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  MyApp({super.key});
 
   final routerDelegate = BeamerDelegate(
-    locationBuilder: BeamerLocationBuilder(
-      beamLocations: [BooksLocation()],
+    initialPath: '/a',
+    locationBuilder: RoutesLocationBuilder(
+      routes: {
+        '*': (context, state, data) => const ScaffoldWithBottomNavBar(),
+      },
     ),
-    notFoundRedirectNamed: '/books',
   );
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      // debugShowCheckedModeBanner: false,
+      // theme: ThemeData(primarySwatch: Colors.indigo),
       routerDelegate: routerDelegate,
       routeInformationParser: BeamerParser(),
-      backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routerDelegate),
+      backButtonDispatcher: BeamerBackButtonDispatcher(
+        delegate: routerDelegate,
+      ),
     );
   }
 }
 
-void main() {
-  runApp(MyApp());
+/// Location defining the pages for the first tab
+class ALocation extends BeamLocation<BeamState> {
+  ALocation(super.routeInformation);
+
+  @override
+  List<String> get pathPatterns => ['/*'];
+
+  @override
+  List<BeamPage> buildPages(BuildContext context, BeamState state) => [
+        const BeamPage(
+          key: ValueKey('a'),
+          title: 'Tab A',
+          type: BeamPageType.noTransition,
+          child: RootScreen(label: 'A', detailsPath: '/a/details'),
+        ),
+        if (state.uri.pathSegments.length == 2)
+          const BeamPage(
+            key: ValueKey('a/details'),
+            title: 'Details A',
+            child: DetailsScreen(label: 'A'),
+          ),
+      ];
+}
+
+/// Location defining the pages for the second tab
+class BLocation extends BeamLocation<BeamState> {
+  BLocation(super.routeInformation);
+
+  @override
+  List<String> get pathPatterns => ['/*'];
+
+  @override
+  List<BeamPage> buildPages(BuildContext context, BeamState state) => [
+        const BeamPage(
+          key: ValueKey('b'),
+          title: 'Tab B',
+          type: BeamPageType.noTransition,
+          child: RootScreen(label: 'B', detailsPath: '/b/details'),
+        ),
+        if (state.uri.pathSegments.length == 2)
+          const BeamPage(
+            key: ValueKey('b/details'),
+            title: 'Details B',
+            child: DetailsScreen(label: 'B'),
+          ),
+      ];
+}
+
+/// A widget class that shows the BottomNavigationBar and performs navigation
+/// between tabs
+class ScaffoldWithBottomNavBar extends StatefulWidget {
+  const ScaffoldWithBottomNavBar({super.key});
+
+  @override
+  State<ScaffoldWithBottomNavBar> createState() => _ScaffoldWithBottomNavBarState();
+}
+
+class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
+  late int _currentIndex;
+
+  final _routerDelegates = [
+    BeamerDelegate(
+      initialPath: '/a',
+      locationBuilder: (routeInformation, _) {
+        if (routeInformation.location!.contains('/a')) {
+          return ALocation(routeInformation);
+        }
+        return NotFound(path: routeInformation.location!);
+      },
+    ),
+    BeamerDelegate(
+      initialPath: '/b',
+      locationBuilder: (routeInformation, _) {
+        if (routeInformation.location!.contains('/b')) {
+          return BLocation(routeInformation);
+        }
+        return NotFound(path: routeInformation.location!);
+      },
+    ),
+  ];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final uriString = Beamer.of(context).configuration.location!;
+
+    print("##### $runtimeType > didChangeDependencies(), uri:$uriString");
+
+    _currentIndex = uriString.contains('/a') ? 0 : 1;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          Beamer(
+            routerDelegate: _routerDelegates[0],
+          ),
+          Beamer(
+            routerDelegate: _routerDelegates[1],
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(label: 'Section A', icon: Icon(Icons.home)),
+          BottomNavigationBarItem(label: 'Section B', icon: Icon(Icons.settings)),
+        ],
+        onTap: (index) {
+          if (index != _currentIndex) {
+            setState(() => _currentIndex = index);
+            _routerDelegates[_currentIndex].update(rebuild: false);
+          }
+        },
+      ),
+    );
+  }
+}
+
+/// Widget for the root/initial pages in the bottom navigation bar.
+class RootScreen extends StatelessWidget {
+  /// Creates a RootScreen
+  const RootScreen({required this.label, required this.detailsPath, Key? key}) : super(key: key);
+
+  /// The label
+  final String label;
+
+  /// The path to the detail page
+  final String detailsPath;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Tab root - $label'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text('Screen $label', style: Theme.of(context).textTheme.titleLarge),
+            const Padding(padding: EdgeInsets.all(4)),
+            TextButton(
+              onPressed: () => Beamer.of(context).beamToNamed(detailsPath),
+              child: const Text('View details'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// The details screen for either the A or B screen.
+class DetailsScreen extends StatefulWidget {
+  /// Constructs a [DetailsScreen].
+  const DetailsScreen({
+    required this.label,
+    Key? key,
+  }) : super(key: key);
+
+  /// The label to display in the center of the screen.
+  final String label;
+
+  @override
+  State<StatefulWidget> createState() => DetailsScreenState();
+}
+
+/// The state for DetailsScreen
+class DetailsScreenState extends State<DetailsScreen> {
+  int _counter = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Details Screen - ${widget.label}'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text('Details for ${widget.label} - Counter: $_counter', style: Theme.of(context).textTheme.titleLarge),
+            const Padding(padding: EdgeInsets.all(4)),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _counter++;
+                });
+              },
+              child: const Text('Increment counter'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

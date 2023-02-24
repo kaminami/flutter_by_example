@@ -1,16 +1,14 @@
 # beamer_example
 
-beamer_example
+Beamerを用いたBottomNavigationBarとタブ状態を保持するサンプル。
 
-## Getting Started
+以下のBlogエントリに記載のコードをコピーしたもの。
 
-This project is a starting point for a Flutter application.
+- Flutter Bottom Navigation Bar with Nested Routes: GoRouter vs Beamer Comparison
+  - https://codewithandrea.com/articles/flutter-bottom-navigation-bar-nested-routes-gorouter-beamer/
 
-A few resources to get you started if this is your first Flutter project:
+# ライブラリ
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Beamer
+  - https://pub.dev/packages/beamer
+  - https://github.com/slovnicki/beamer
