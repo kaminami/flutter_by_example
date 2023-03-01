@@ -2,6 +2,7 @@
 
 Grizzly IOを用いて、TSVからList<Map<String, dynamic>に変換するサンプル。
 
+from:
 ```tsv
 "Name"	"Age"	"House"
 "Jon"	"25"	"Stark"
@@ -11,6 +12,7 @@ Grizzly IOを用いて、TSVからList<Map<String, dynamic>に変換するサン
 "山田太郎"	"18"	"東京"
 ```
 
+to:
 ```List<Map<String, dynamic>
 {Name: Jon, Age: 25, House: Stark}
 {Name: Dany, Age: 28, House: Targaryan}
