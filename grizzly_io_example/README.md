@@ -1,16 +1,10 @@
 # grizzly_io_example
 
-A new Flutter project.
+Grizzly IOを用いて、TSVからList<Map<String, dynamic>に変換するサンプル。
 
-## Getting Started
+## 利用ライブラリ
 
-This project is a starting point for a Flutter application.
+- Grizzly IO
+    - https://pub.dev/packages/grizzly_io
+    - https://github.com/Grizzly-dart/grizzly_io
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
