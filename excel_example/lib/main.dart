@@ -31,21 +31,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final Sheet sheet;
+  late Future<Sheet> sheetF;
 
   @override
   void initState() {
     super.initState();
 
-    init();
+    sheetF = loadExcelSheet();
   }
 
-  Future<void> init() async {
+  Future<Sheet> loadExcelSheet() async {
     ByteData data = await rootBundle.load("assets/excel/example.xlsx");
     final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     final excel = Excel.decodeBytes(bytes);
 
-    sheet = excel.sheets['Sheet1']!;
+    return excel.sheets['Sheet1']!;
   }
 
   @override
@@ -55,13 +55,28 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: SingleChildScrollView(
-        child: Table(
-          border: TableBorder.all(
-            color: Colors.black26,
-          ),
-          children: [for (int rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) _buildTableRow(sheet.rows[rowIndex], rowIndex)],
-        ),
+        child: buildTable(),
       ),
+    );
+  }
+
+  Widget buildTable() {
+    return FutureBuilder<Sheet>(
+      future: sheetF,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final sheet = snapshot.data!;
+
+          return Table(
+            border: TableBorder.all(
+              color: Colors.black26,
+            ),
+            children: [for (int rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) _buildTableRow(sheet.rows[rowIndex], rowIndex)],
+          );
+        } else {
+          return const Text('no data');
+        }
+      },
     );
   }
 
