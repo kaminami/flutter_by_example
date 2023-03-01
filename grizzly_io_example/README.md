@@ -28,5 +28,6 @@ to:
     - https://pub.dev/packages/grizzly_io
     - https://github.com/Grizzly-dart/grizzly_io
 
-![image](https://user-images.githubusercontent.com/859822/222242609-531d7ed3-f80c-42ec-b8c8-02a5f44e5e88.png)
+## スクリーンショット
 ※列の並びはTSV定義から変更している。
+![image](https://user-images.githubusercontent.com/859822/222242609-531d7ed3-f80c-42ec-b8c8-02a5f44e5e88.png)
