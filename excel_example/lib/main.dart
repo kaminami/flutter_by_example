@@ -31,13 +31,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Future<Sheet> sheetF;
+  late Future<Sheet> sheetFuture;
 
   @override
   void initState() {
     super.initState();
 
-    sheetF = loadExcelSheet();
+    sheetFuture = loadExcelSheet();
   }
 
   Future<Sheet> loadExcelSheet() async {
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget buildTable() {
     return FutureBuilder<Sheet>(
-      future: sheetF,
+      future: sheetFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final sheet = snapshot.data!;
