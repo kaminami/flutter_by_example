@@ -1,16 +1,15 @@
 # tab_example
 
-A new Flutter project.
+Routemasterを使用したタブの実装例。AppBarの表示/非表示に対応。
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## 利用ライブラリ
 
-A few resources to get you started if this is your first Flutter project:
+- Routemaster
+    - https://pub.dev/packages/routemaster
+    - https://github.com/tomgilder/routemaster
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 参考
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter Tutorial - How To Show/Hide AppBar On Scroll | Collapsing Toolbar & Sliver App Bar
+  - https://www.youtube.com/watch?v=xzPXqQ-Pe2g
