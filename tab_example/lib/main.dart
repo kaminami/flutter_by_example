@@ -48,22 +48,36 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final tabPage = TabPage.of(context);
 
+    final tabBarView = TabBarView(
+      controller: tabPage.controller,
+      children: [
+        for (final stack in tabPage.stacks) PageStackNavigator(stack: stack),
+      ],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tab Example'),
-        bottom: TabBar(
-          controller: tabPage.controller,
-          tabs: const <Widget>[
-            Tab(child: Text('feed')),
-            Tab(child: Text('settings')),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: tabPage.controller,
-        children: [
-          for (final stack in tabPage.stacks) PageStackNavigator(stack: stack),
-        ],
+      body: NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              leading: const Icon(Icons.tab),
+              floating: true,
+              pinned: true,
+              snap: true,
+              title: const Text('Tab Example'),
+              centerTitle: false,
+              bottom: TabBar(
+                controller: tabPage.controller,
+                tabs: const <Widget>[
+                  Tab(child: Text('Feed')),
+                  Tab(child: Text('Settings')),
+                ],
+              ),
+            )
+          ];
+        },
+        body: tabBarView,
       ),
     );
   }
@@ -74,19 +88,17 @@ class FeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          const Text('FeedPage'),
-          ElevatedButton(
-            onPressed: () {
-              const String id = '111223';
-              Routemaster.of(context).push('/profile/$id');
-            },
-            child: const Text('goto profile'),
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        const Text('FeedPage'),
+        ElevatedButton(
+          onPressed: () {
+            const String id = '111223';
+            Routemaster.of(context).push('/profile/$id');
+          },
+          child: const Text('goto Profile'),
+        ),
+      ],
     );
   }
 }
@@ -107,25 +119,33 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final listView = ListView(
+      children: [
+        Text('ProfilePage $id'),
+      ],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        actions: [
-          ElevatedButton(
-            child: const Text('goto settings'),
-            onPressed: () {
-              Routemaster.of(context).push('/tab/settings');
-            },
-          ),
-        ],
-        leading: ElevatedButton(
-          child: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Routemaster.of(context).replace('/tab/feed');
-          },
-        ),
+      body: NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (ctx, innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Routemaster.of(ctx).replace('/tab/feed');
+                },
+              ),
+              floating: true,
+              snap: true,
+              title: const Text('Profile'),
+              centerTitle: false,
+            ),
+          ];
+        },
+        body: listView,
       ),
-      body: Text('ProfilePage $id'),
     );
   }
 }
