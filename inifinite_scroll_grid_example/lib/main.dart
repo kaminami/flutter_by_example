@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final int crossAxisCount = max((size.width ~/ 320), 1); // 320はYouTube動画のサムネ幅(mqdefault.jpg)
+    final int crossAxisCount = max((size.width ~/ 320), 1); // 320はYouTube動画のサムネ幅(mqdefault.jpg)だが、特に深い意味はない。サンプル用の仮置き
 
     print("size: $size, crossAxisCount: $crossAxisCount");
 
