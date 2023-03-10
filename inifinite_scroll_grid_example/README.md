@@ -1,6 +1,7 @@
 # inifinite_scroll_grid_example
 
 無限スクロール対応Gridの実装例。
+画面幅に応じて、Gridの列数を調整している。
 
 
 ## 利用ライブラリ
