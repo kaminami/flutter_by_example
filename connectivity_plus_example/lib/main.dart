@@ -1,10 +1,14 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:connectivity_plus_example/connectivity_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -17,21 +21,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'connectivity_plus Demo'),
+      home: const MyHomePage(title: 'connectivity_plus Demo'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
+class MyHomePage extends ConsumerStatefulWidget {
   final String title;
 
+  const MyHomePage({super.key, required this.title});
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ConsumerState<MyHomePage> {
   ConnectivityResult? resultByButton;
 
   StreamSubscription<ConnectivityResult>? subscription;
@@ -42,9 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      print('onConnectivityChanged');
-
       setState(() {
+        print("$runtimeType, onConnectivityChanged, $result");
         resultByListener = result;
       });
     });
@@ -59,6 +62,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final AsyncValue<ConnectivityResult> resultByProvider = ref.watch(connectivityStateProvider);
+
+    final resultByNotifierView = resultByProvider.when(
+      data: (res) {
+        return Text("update by provider: $res");
+      },
+      error: (error, stacktrace) => Text(error.toString()),
+      loading: CircularProgressIndicator.new,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -67,22 +80,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "update by listener: $resultByListener"
-            ),
+            resultByNotifierView,
             const SizedBox(height: 30),
-            Text(
-              "update by button pressed: ${resultByButton ?? 'N/A'}"
-            ),
+            Text("update by listener: $resultByListener"),
+            const SizedBox(height: 30),
+            Text("update by button pressed: ${resultByButton ?? 'N/A'}"),
             FloatingActionButton(
               child: const Icon(Icons.refresh),
-                onPressed: () async {
-                  final res = await Connectivity().checkConnectivity();
+              onPressed: () async {
+                final res = await Connectivity().checkConnectivity();
 
-                  setState(() {
-                    resultByButton = res;
-                  });
-                }
+                setState(() {
+                  print("$runtimeType, FloatingActionButton.onPressed, $res");
+                  resultByButton = res;
+                });
+              },
             ),
           ],
         ),
