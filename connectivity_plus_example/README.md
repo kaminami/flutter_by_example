@@ -7,3 +7,7 @@ connectivity_plusを用いてネットワーク接続状態(mobile | wifi | none
 
 - connectivity_plus
   - https://pub.dev/packages/connectivity_plus
+ 
+
+https://user-images.githubusercontent.com/859822/225348052-0be3c503-fd07-4199-8f20-168f9c27d657.mp4
+
